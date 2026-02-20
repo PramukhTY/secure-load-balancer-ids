@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Secure Load Balancer Dashboard</title>
+    <style>
+        body {
+            background:#020617;
+            color:white;
+            font-family:Arial;
+            text-align:center;
+        }
+        button {
+            padding:12px 20px;
+            margin:10px;
+            font-size:15px;
+            cursor:pointer;
+        }
+        #logs {
+            width:90%;
+            margin:auto;
+            height:300px;
+            overflow:auto;
+            background:black;
+            padding:15px;
+            border-radius:10px;
+            text-align:left;
+            font-family:monospace;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🔐 Secure Load Balancer with IDS</h1>
+
+<a href="/normal"><button>Normal Request</button></a>
+<a href="/flood"><button>Flood Attack</button></a>
+<a href="/scan"><button>Port Scan</button></a>
+
+<h2>📊 Live System Activity</h2>
+<div id="logs"></div>
+
+<script>
+function loadLogs() {
+    fetch("/api/logs")
+        .then(res => res.json())
+        .then(data => {
+            let html = "";
+            data.forEach(log => {
+                html += `[${log.time}] (${log.type}) ${log.message}<br>`;
+            });
+            document.getElementById("logs").innerHTML = html;
+        });
+}
+setInterval(loadLogs, 1000);
+loadLogs();
+</script>
+
+</body>
+</html>
